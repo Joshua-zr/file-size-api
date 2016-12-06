@@ -16,15 +16,18 @@ app.get('/', (req, res) => {
 
 app.post('/file', uploading.single('uploadFile'), (req, res) => {
   var fileSize = req.file.size;
+  var filePath = req.file.path;
   var obj = {
     fileSize: fileSize,
   }
   console.log(obj.fileSize);
-  // fs.stat(req.file.path, (err, stats) => {
+  // fs.stat(filePath, (err, stats) => {
   //   if (err) throw err;
-  //   res.end(stats.size);
+  //   console.log(stats);
   // })
-  // res.send(fileSize);
+  fs.unlink(filePath, err => {
+    if (err) throw err;
+  });
   res.json(obj);
 })
 
